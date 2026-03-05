@@ -1,0 +1,97 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Packages Download",
+        "description": "Configure the integration name and update interval.",
+        "data": {
+          "name": "Name",
+          "npm_periods": "NPM sensor periods (daily, weekly, etc.)",
+          "scan_interval": "Update interval (seconds)",
+          "github_token": "GitHub token (optional, for higher rate limits)"
+        }
+      },
+      "add_package": {
+        "title": "Add package",
+        "description": "Select the type and enter the package identifier.",
+        "data": {
+          "package_type": "Type",
+          "package_name": "Package or user"
+        }
+      },
+      "remove_package": {
+        "title": "Remove package",
+        "description": "Select the package to remove.",
+        "data": {
+          "package_index": "Package"
+        }
+      },
+      "packages": {
+        "title": "Packages ({count})",
+        "description": "Packages to monitor:\n{packages_list}\n\nAdd more or confirm.",
+        "data": {
+          "action": "Action"
+        }
+      }
+    },
+    "error": {
+      "name_required": "Name is required",
+      "packages_required": "At least one package is required",
+      "invalid_npm": "Invalid NPM package name",
+      "invalid_github": "Invalid GitHub repo (use owner/repo format)",
+      "invalid_username": "Invalid username"
+    },
+    "abort": {
+      "already_configured": "This integration is already configured"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Options",
+        "description": "Choose what to configure.",
+        "data": {
+          "action": "Action"
+        }
+      },
+      "edit": {
+        "title": "General settings",
+        "description": "Update name, interval and token.",
+        "data": {
+          "name": "Name",
+          "npm_periods": "NPM sensor periods",
+          "scan_interval": "Update interval (seconds)",
+          "github_token": "GitHub token (optional)"
+        }
+      },
+      "packages": {
+        "title": "Packages ({count})",
+        "description": "Packages to monitor:\n{packages_list}",
+        "data": {
+          "action": "Action"
+        }
+      },
+      "add_package": {
+        "title": "Add package",
+        "description": "Select the type and enter the package identifier.",
+        "data": {
+          "package_type": "Type",
+          "package_name": "Package or user"
+        }
+      },
+      "remove_package": {
+        "title": "Remove package",
+        "description": "Select the package to remove.",
+        "data": {
+          "package_index": "Package"
+        }
+      }
+    },
+    "error": {
+      "name_required": "Name is required",
+      "invalid_npm": "Invalid NPM package name",
+      "invalid_github": "Invalid GitHub repo (use owner/repo format)",
+      "invalid_username": "Invalid username"
+    }
+  }
+}

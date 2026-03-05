@@ -1,0 +1,97 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Packages Download",
+        "description": "Configura il nome dell'integrazione e l'intervallo di aggiornamento.",
+        "data": {
+          "name": "Nome",
+          "npm_periods": "Periodi sensori NPM (giornaliero, settimanale, ecc.)",
+          "scan_interval": "Intervallo aggiornamento (secondi)",
+          "github_token": "Token GitHub (opzionale, per limiti rate più alti)"
+        }
+      },
+      "add_package": {
+        "title": "Aggiungi pacchetto",
+        "description": "Seleziona il tipo e inserisci l'identificativo del pacchetto.",
+        "data": {
+          "package_type": "Tipo",
+          "package_name": "Pacchetto o utente"
+        }
+      },
+      "remove_package": {
+        "title": "Rimuovi pacchetto",
+        "description": "Seleziona il pacchetto da rimuovere.",
+        "data": {
+          "package_index": "Pacchetto"
+        }
+      },
+      "packages": {
+        "title": "Pacchetti ({count})",
+        "description": "Pacchetti da monitorare:\n{packages_list}\n\nAggiungi altri o conferma.",
+        "data": {
+          "action": "Azione"
+        }
+      }
+    },
+    "error": {
+      "name_required": "Il nome è obbligatorio",
+      "packages_required": "È richiesto almeno un pacchetto",
+      "invalid_npm": "Nome pacchetto NPM non valido",
+      "invalid_github": "Repo GitHub non valida (usa formato owner/repo)",
+      "invalid_username": "Username non valido"
+    },
+    "abort": {
+      "already_configured": "Questa integrazione è già configurata"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Opzioni",
+        "description": "Scegli cosa configurare.",
+        "data": {
+          "action": "Azione"
+        }
+      },
+      "edit": {
+        "title": "Impostazioni generali",
+        "description": "Aggiorna nome, intervallo e token.",
+        "data": {
+          "name": "Nome",
+          "npm_periods": "Periodi sensori NPM",
+          "scan_interval": "Intervallo aggiornamento (secondi)",
+          "github_token": "Token GitHub (opzionale)"
+        }
+      },
+      "packages": {
+        "title": "Pacchetti ({count})",
+        "description": "Pacchetti da monitorare:\n{packages_list}",
+        "data": {
+          "action": "Azione"
+        }
+      },
+      "add_package": {
+        "title": "Aggiungi pacchetto",
+        "description": "Seleziona il tipo e inserisci l'identificativo del pacchetto.",
+        "data": {
+          "package_type": "Tipo",
+          "package_name": "Pacchetto o utente"
+        }
+      },
+      "remove_package": {
+        "title": "Rimuovi pacchetto",
+        "description": "Seleziona il pacchetto da rimuovere.",
+        "data": {
+          "package_index": "Pacchetto"
+        }
+      }
+    },
+    "error": {
+      "name_required": "Il nome è obbligatorio",
+      "invalid_npm": "Nome pacchetto NPM non valido",
+      "invalid_github": "Repo GitHub non valida (usa formato owner/repo)",
+      "invalid_username": "Username non valido"
+    }
+  }
+}
