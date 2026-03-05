@@ -39,6 +39,42 @@ def _npm_period_to_api(period: str) -> str:
     return period
 
 
+async def _fetch_with_retry(
+    session: aiohttp.ClientSession,
+    url: str,
+    params: dict | None = None,
+    headers: dict | None = None,
+    max_retries: int = 2,
+) -> dict[str, Any] | None:
+    """Fetch URL with retry on connection/DNS errors."""
+    for attempt in range(max_retries + 1):
+        try:
+            async with session.get(
+                url,
+                params=params,
+                headers=headers,
+                timeout=aiohttp.ClientTimeout(total=15),
+            ) as resp:
+                if resp.status == 429:
+                    _LOGGER.warning("Rate limit reached for %s", url)
+                    return None
+                if resp.status != 200:
+                    return None
+                return await resp.json()
+        except (aiohttp.ClientError, asyncio.TimeoutError, OSError) as e:
+            if attempt < max_retries:
+                await asyncio.sleep(2**attempt)
+            else:
+                _LOGGER.warning(
+                    "Cannot connect to %s (DNS/network error): %s. "
+                    "Check Settings → System → Network → DNS servers.",
+                    url.split("/")[2] if "/" in url else url,
+                    e,
+                )
+                return None
+    return None
+
+
 async def fetch_npm_downloads(
     session: aiohttp.ClientSession,
     package: str,
@@ -47,19 +83,10 @@ async def fetch_npm_downloads(
     """Fetch NPM downloads for a package and period."""
     api_period = _npm_period_to_api(period)
     url = f"{NPM_API_BASE}/{api_period}/{package}"
-    try:
-        async with session.get(url, timeout=aiohttp.ClientTimeout(total=10)) as resp:
-            if resp.status == 429:
-                _LOGGER.warning("NPM rate limit reached for %s", package)
-                return None
-            if resp.status != 200:
-                _LOGGER.warning("NPM API %s: %s", url, resp.status)
-                return None
-            data = await resp.json()
-            return data
-    except Exception as e:
-        _LOGGER.warning("NPM error %s: %s", package, e)
-        return None
+    data = await _fetch_with_retry(session, url)
+    if data is None:
+        _LOGGER.debug("NPM fetch failed for %s (period %s)", package, period)
+    return data
 
 
 async def fetch_npm_downloads_all_periods(
@@ -87,24 +114,11 @@ async def fetch_npm_packages_by_maintainer(
     username: str,
 ) -> list[str]:
     """Fetch NPM packages list by maintainer (max MAX_NPM_PACKAGES_PER_USER)."""
+    await _delay()
     url = f"{NPM_REGISTRY_BASE}/-/v1/search"
     params = {"text": f"maintainer:{username}", "size": MAX_NPM_PACKAGES_PER_USER}
-    try:
-        await _delay()
-        async with session.get(
-            url,
-            params=params,
-            timeout=aiohttp.ClientTimeout(total=15),
-        ) as resp:
-            if resp.status == 429:
-                _LOGGER.warning("NPM rate limit reached for search")
-                return []
-            if resp.status != 200:
-                _LOGGER.warning("NPM search API %s: %s", url, resp.status)
-                return []
-            data = await resp.json()
-    except Exception as e:
-        _LOGGER.warning("NPM search error for %s: %s", username, e)
+    data = await _fetch_with_retry(session, url, params=params)
+    if data is None:
         return []
 
     packages = []
